@@ -16,6 +16,6 @@ const handleValidationErrors = async (
 export const validateUserRequest = [
   body("name").notEmpty().withMessage("El nombre es requerido"),
   body("username").notEmpty().withMessage("El nombre de usuario es requerido"),
-  body("rol").isIn(["Admin", "User"]).withMessage("El rol es requerido"),
+  body("rol").isIn(["admin", "cashier"]).withMessage("El rol es requerido"),
   handleValidationErrors,
 ];

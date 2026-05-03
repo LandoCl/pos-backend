@@ -63,7 +63,7 @@ export const createUser = async (req: Request, res: Response): Promise<any> => {
       email,
       username,
       name,
-      rol: rol || "user",
+      rol: rol || "cashier",
     });
     await newUser.save();
     return res.status(201).json(newUser.toObject());
