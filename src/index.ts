@@ -6,6 +6,8 @@ import mongoose from "mongoose";
 
 dotenv.config();
 
+import userRoutes from "./routes/userRoutes.js";
+
 mongoose
   .connect(process.env.DB_CONNECTION_STRING as string)
   .then(() => {
@@ -20,7 +22,10 @@ mongoose
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.get("/", (req: Request, res: Response) => {
+
+app.use("/api/user", userRoutes);
+
+app.get("/", async (req: Request, res: Response) => {
   res.send("Hola mundo desde Express y TS");
 });
 
