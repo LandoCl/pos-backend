@@ -34,3 +34,5 @@ const saleSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
+
+export default mongoose.model("Sale", saleSchema);

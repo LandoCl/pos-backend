@@ -35,4 +35,4 @@ const purchaseSchema = new mongoose.Schema({
   },
 });
 
-export const Purchase = mongoose.model("Purchase", purchaseSchema);
+export default mongoose.model("Purchase", purchaseSchema);

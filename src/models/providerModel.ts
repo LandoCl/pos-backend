@@ -19,4 +19,4 @@ const providerSchema = new mongoose.Schema({
   },
 });
 
-export const Provider = mongoose.model("Provider", providerSchema);
+export default mongoose.model("Provider", providerSchema);
