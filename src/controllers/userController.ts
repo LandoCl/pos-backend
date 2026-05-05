@@ -5,7 +5,7 @@ import crypto from "crypto";
 
 export const getUser = async (req: Request, res: Response): Promise<any> => {
   try {
-    const currentUser = await User.findById({ _id: req.userId });
+    const currentUser = await User.findById(req.userId);
 
     if (!currentUser) {
       return res.status(404).json({ message: "Usuario no encontrado" });
