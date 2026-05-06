@@ -49,7 +49,7 @@ export const createProvider = async (
     // Verificar duplicado por nombre y teléfono
     const existingProvider = await Provider.findOne({ name, phone });
     if (existingProvider) {
-      return res.status(200).json({ message: "Proveedor duplicado" });
+      return res.status(409).json({ message: "Proveedor duplicado" });
     }
 
     const newProvider = new Provider({
@@ -81,7 +81,7 @@ export const updateProvider = async (
     const existingProvider = await Provider.findById(id);
 
     if (!existingProvider) {
-      return res.status(401).json({ message: "Proveedor no encontrado" });
+      return res.status(404).json({ message: "Proveedor no encontrado" });
     }
 
     existingProvider.name = name;

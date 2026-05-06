@@ -55,7 +55,7 @@ export const createProduct = async (
     const existingProduct = await Product.findOne({ code });
 
     if (existingProduct) {
-      return res.status(200).json({ message: "Producto duplicado" });
+      return res.status(409).json({ message: "Producto duplicado" });
     }
 
     const newProduct = new Product({
@@ -102,7 +102,7 @@ export const updateProduct = async (
     const existingProduct = await Product.findById(id);
 
     if (!existingProduct) {
-      return res.status(401).json({ message: "Producto no encontrado" });
+      return res.status(404).json({ message: "Producto no encontrado" });
     }
 
     existingProduct.code = code;

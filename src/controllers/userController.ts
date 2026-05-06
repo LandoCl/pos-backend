@@ -79,7 +79,7 @@ export const updateUser = async (req: Request, res: Response): Promise<any> => {
     //Obtenemos los datos del usuario que inicio sesion
     const user = await User.findById(req.userId);
     if (!user) {
-      return res.status(401).json({ message: "Usuario no encontrado" });
+      return res.status(404).json({ message: "Usuario no encontrado" });
     }
     user!.name = name;
     user!.username = username;
