@@ -17,6 +17,16 @@ export const getUser = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
+export const getAllUsers = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error al obtener los usuarios" });
+  }
+};
+
 export const createUser = async (req: Request, res: Response): Promise<any> => {
   try {
     const { email, username, name, rol } = req.body;
@@ -90,5 +100,67 @@ export const updateUser = async (req: Request, res: Response): Promise<any> => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Error al actualizar el usuario" });
+  }
+};
+
+export const updateUserById = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { name, username, rol } = req.body;
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    user.name = name;
+    user.username = username;
+    if (rol) user.rol = rol;
+    await user.save();
+
+    if (user.auth0Id) {
+      const domain = process.env.AUTH0_ISSUER_BASE_URL!.replace("https://", "").replace("/", "");
+      const management = new ManagementClient({
+        domain: domain,
+        clientId: process.env.AUTH0_M2M_CLIENT_ID!,
+        clientSecret: process.env.AUTH0_M2M_CLIENT_SECRET!,
+      });
+      try {
+        await management.users.update({ id: user.auth0Id }, { name, nickname: username, username });
+      } catch(e) {
+        console.log("Auth0 update error:", e);
+      }
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Error al actualizar el usuario" });
+  }
+};
+
+export const deleteUser = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    if (user.auth0Id) {
+      const domain = process.env.AUTH0_ISSUER_BASE_URL!.replace("https://", "").replace("/", "");
+      const management = new ManagementClient({
+        domain: domain,
+        clientId: process.env.AUTH0_M2M_CLIENT_ID!,
+        clientSecret: process.env.AUTH0_M2M_CLIENT_SECRET!,
+      });
+      try {
+        await management.users.delete({ id: user.auth0Id });
+      } catch(e) {
+        console.log("Auth0 delete error:", e);
+      }
+    }
+
+    await User.findByIdAndDelete(req.params.id);
+    res.json({ message: "Usuario eliminado exitosamente" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Error al eliminar el usuario" });
   }
 };
