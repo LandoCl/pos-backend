@@ -35,7 +35,8 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
   provider: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Provider",
     required: true,
   },
 });

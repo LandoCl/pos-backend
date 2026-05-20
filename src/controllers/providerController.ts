@@ -102,3 +102,26 @@ export const updateProvider = async (
       .json({ message: "Error al actualizar el proveedor" });
   }
 };
+
+export const deleteProvider = async (
+  req: Request,
+  res: Response,
+): Promise<any> => {
+  try {
+    const id = req.params.id;
+    const existingProvider = await Provider.findById(id);
+
+    if (!existingProvider) {
+      return res.status(404).json({ message: "Proveedor no encontrado" });
+    }
+
+    await existingProvider.deleteOne();
+
+    return res.status(200).json({
+      message: "Proveedor eliminado exitosamente",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Error al eliminar el proveedor" });
+  }
+};

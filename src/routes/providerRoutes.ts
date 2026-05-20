@@ -4,6 +4,7 @@ import {
   getProviderById,
   createProvider,
   updateProvider,
+  deleteProvider,
 } from "../controllers/providerController.js";
 import { jwtCheck } from "../middleware/auth.js";
 import { validateProviderRequest } from "../middleware/validation.js";
@@ -14,5 +15,6 @@ router.get("/", jwtCheck, getProvider);
 router.get("/:id", jwtCheck, getProviderById);
 router.post("/", jwtCheck, validateProviderRequest, createProvider);
 router.put("/:id", jwtCheck, validateProviderRequest, updateProvider);
+router.delete("/:id", jwtCheck, deleteProvider);
 
 export default router;
