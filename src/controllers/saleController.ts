@@ -23,7 +23,9 @@ export const getSales = async (req: Request, res: Response): Promise<any> => {
       query.user = userId;
     }
 
-    const sales = await Sale.find(query).sort({ date: -1 });
+    const sales = await Sale.find(query)
+      .populate("user", "name username email")
+      .sort({ date: -1 });
     return res.status(200).json({ sales });
   } catch (error) {
     console.log(error);
