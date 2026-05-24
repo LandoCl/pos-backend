@@ -11,6 +11,7 @@ import productRoutes from "./routes/productRoutes.js";
 import providerRoutes from "./routes/providerRoutes.js";
 import purchaseRoutes from "./routes/purchaseRoutes.js";
 import saleRoutes from "./routes/saleRoutes.js";
+import dashboardRoutes from "./routes/dashboardRoutes.js";
 
 mongoose
   .connect(process.env.DB_CONNECTION_STRING as string)
@@ -32,6 +33,7 @@ app.use("/api/product", productRoutes);
 app.use("/api/provider", providerRoutes);
 app.use("/api/purchase", purchaseRoutes);
 app.use("/api/sale", saleRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 app.get("/", async (req: Request, res: Response) => {
   res.send("Hola mundo desde Express y TS");

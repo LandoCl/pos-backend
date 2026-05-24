@@ -18,8 +18,8 @@ const userSchema = new mongoose.Schema({
   },
   rol: {
     type: String,
-    enum: ["admin", "cashier"],
-    default: "cashier",
+    enum: ["Admin", "Cajero"],
+    default: "Cajero",
   },
 });
 
