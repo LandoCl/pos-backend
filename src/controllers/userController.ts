@@ -17,7 +17,10 @@ export const getUser = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
-export const getAllUsers = async (req: Request, res: Response): Promise<any> => {
+export const getAllUsers = async (
+  req: Request,
+  res: Response,
+): Promise<any> => {
   try {
     const users = await User.find();
     res.json(users);
@@ -103,7 +106,10 @@ export const updateUser = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
-export const updateUserById = async (req: Request, res: Response): Promise<any> => {
+export const updateUserById = async (
+  req: Request,
+  res: Response,
+): Promise<any> => {
   try {
     const { name, username, rol } = req.body;
     const user = await User.findById(req.params.id);
@@ -116,15 +122,20 @@ export const updateUserById = async (req: Request, res: Response): Promise<any> 
     await user.save();
 
     if (user.auth0Id) {
-      const domain = process.env.AUTH0_ISSUER_BASE_URL!.replace("https://", "").replace("/", "");
+      const domain = process.env
+        .AUTH0_ISSUER_BASE_URL!.replace("https://", "")
+        .replace("/", "");
       const management = new ManagementClient({
         domain: domain,
         clientId: process.env.AUTH0_M2M_CLIENT_ID!,
         clientSecret: process.env.AUTH0_M2M_CLIENT_SECRET!,
       });
       try {
-        await management.users.update({ id: user.auth0Id }, { name, nickname: username, username });
-      } catch(e) {
+        await management.users.update(
+          { id: user.auth0Id },
+          { name, nickname: username, username },
+        );
+      } catch (e) {
         console.log("Auth0 update error:", e);
       }
     }
@@ -144,7 +155,9 @@ export const deleteUser = async (req: Request, res: Response): Promise<any> => {
     }
 
     if (user.auth0Id) {
-      const domain = process.env.AUTH0_ISSUER_BASE_URL!.replace("https://", "").replace("/", "");
+      const domain = process.env
+        .AUTH0_ISSUER_BASE_URL!.replace("https://", "")
+        .replace("/", "");
       const management = new ManagementClient({
         domain: domain,
         clientId: process.env.AUTH0_M2M_CLIENT_ID!,
@@ -152,7 +165,7 @@ export const deleteUser = async (req: Request, res: Response): Promise<any> => {
       });
       try {
         await management.users.delete({ id: user.auth0Id });
-      } catch(e) {
+      } catch (e) {
         console.log("Auth0 delete error:", e);
       }
     }

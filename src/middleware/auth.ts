@@ -37,15 +37,12 @@ export const jwtParse = async (
 
     const user = await User.findOne({ auth0Id });
     if (!user) {
-      console.log("jwtParse - !user find Autorizacion denegada");
-      return res.status(401).json({ message: "Autorizacion denegada" });
+      return res.status(401).json({ message: "Autorizacion denegada: Usuario no registrado en la base de datos" });
     }
     req.auth0Id = auth0Id;
     req.userId = user._id.toString();
-    console.log("jwtParse - Autorizacion concedida");
     next();
   } catch (error) {
-    console.log("jwtParse - catch Autorizacion denegada");
-    return res.status(401).json({ message: "Autorizacion denegada" });
+    return res.status(401).json({ message: "Autorizacion denegada: Error en el parseo del token", error: error instanceof Error ? error.message : String(error) });
   }
 };
